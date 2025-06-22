@@ -1,0 +1,36 @@
+@model UpdateBookDTO
+
+<div class="container mt-4">
+    <h2>Edit Book</h2>
+
+    <form asp-action="Edit" method="post" class="w-50">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control form-control-sm" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <input asp-for="Description" class="form-control form-control-sm" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>     
+
+        <div class="mb-3">
+            <label asp-for="PublishedYear" class="form-label"></label>
+            <input asp-for="PublishedYear" class="form-control form-control-sm" type="date" />
+            <span asp-validation-for="PublishedYear" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-3 mt-3">
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <a asp-action="Index" class="btn btn-danger btn-sm">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

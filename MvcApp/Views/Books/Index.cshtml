@@ -1,0 +1,94 @@
+@model List<GetBookDTO>
+@{
+    ViewBag.Title = "Books";
+    var authorName = ViewBag.AuthorName as string;
+    var genreName = ViewBag.GenreName as string;
+    var pageNumber = (int)(ViewBag.PageNumber ?? 1);
+    var pageSize = (int)(ViewBag.PageSize ?? 10);
+    var totalPages = (int)(ViewBag.TotalPages ?? 1);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Books</h1>
+    <a asp-action="Create" class="btn btn-primary">Add</a>
+</div>
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="authorName" value="@authorName"
+               class="form-control" placeholder="Search by author name..." />
+    </div>
+    <div class="col-md-4">
+        <input type="text" name="genreName" value="@genreName"
+               class="form-control" placeholder="Search by genre name..." />
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </div>
+</form>
+
+<!-- 📚 Список книг -->
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">No books found.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var book in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="~/dev1ce.jpg" class="card-img-top object-fit-cover mx-auto mt-3"
+                         style="width: 150px; height: 150px; border-radius: 20px;" alt="Book image" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary fw-bold">@book.Title</h5>
+                        <h6 class="card-subtitle text-muted">@book.Description</h6>
+                        <p class="text-secondary mb-1">Author ID: @book.AuthorId</p>
+                        <p class="text-secondary mb-2">Genre ID: @book.GenreId</p>
+                        <p class="text-muted">Year: @book.PublishedYear</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 text-end">
+                        <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-outline-primary">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@book.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger ms-2">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(pageNumber == 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-pageNumber="@(pageNumber - 1)"
+                   asp-route-pageSize="@pageSize"
+                   asp-route-authorName="@authorName"
+                   asp-route-genreName="@genreName">Previous</a>
+            </li>
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == pageNumber ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-pageSize="@pageSize"
+                       asp-route-authorName="@authorName"
+                       asp-route-genreName="@genreName">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(pageNumber == totalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-pageNumber="@(pageNumber + 1)"
+                   asp-route-pageSize="@pageSize"
+                   asp-route-authorName="@authorName"
+                   asp-route-genreName="@genreName">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

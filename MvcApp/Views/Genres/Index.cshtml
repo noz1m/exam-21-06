@@ -1,0 +1,27 @@
+@model List<CetGenreDTO>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Genre</h1>
+    <a asp-action="Create" class="btn btn-primary">Add</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-5">
+    @foreach (var genre in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="~/dev1ce.jpg" class="card-img-top object-fit-cover mx-auto mt-3"
+                     style="width: 150px; height: 150px; border-radius: 20px;" alt="Genre image"/>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary fw-bold">@genre.Name</h5>
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                    <a asp-action="Edit" asp-route-id="@genre.Id" class="btn btn-outline-primary">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@genre.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger ms-2">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
